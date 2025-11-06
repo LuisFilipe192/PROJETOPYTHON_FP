@@ -27,7 +27,7 @@ def salvar_animais():
     arquivo.close()
 
 def carregar_animais():
-
+    
     animais.clear()
 
     try:
@@ -36,40 +36,53 @@ def carregar_animais():
     except FileNotFoundError:
         return print("arquivo não encontrado")
 
-    #arquivo.close()
+    arquivo.close()
 
  
     animal = {}
 
     for linha in linhas:
         linha = linha.strip()
-        if linha != "":
-
-            '''
-            partes = linha.split(":", 1)
-            chave = partes[0].strip().lower()
-            valor = partes[1].strip()
-            animal[chave] = valor
-            '''
-
+        if linha == "":
+            if animal:
+                animais.append(animal)
+                animal={}
+        else:
             chave, valor = linha.split(":", 1)
             animal[chave.strip().lower()] = valor.strip()
 
-            if animal:
-                animais.append(animal)
+    if animal:
+        animais.append(animal)
               
 def adicionar_animal():
     limpar_tela()
     print("Digite as informações do animal:")
+
+    nome=input("Nome: ")
+    especie=input("Espécie: ")
+    raça=input("Raça: ")
+    while True:
+        idade_input=input("Idade: ")
+        try:
+            idade=int(idade_input)
+            if idade < 0:
+                print("Numero invalido! Não existe idade negativa!")
+            else:
+                break
+        except ValueError:
+            print("Invalidado! diga a idade na forma de um número inteiro!")
+    estado=input("Estado de saúde: ")
+    comportamento=input("Comportamento: ")
+    
     animal = {
         "id": gerar_id(),
-        "nome": input("Nome: ").lower().strip(),
-        "espécie": input("Espécie: ").lower().strip(),
-        "raça": input("Raça: ").lower().strip(),
-        "idade": input("Idade: ").lower().strip(),
-        "estado de saude": input("Estado de saude: ").lower().strip(),
+        "nome": nome.lower().strip(),
+        "espécie": especie.lower().strip(),
+        "raça": raça.lower().strip(),
+        "idade": str(idade).strip(),
+        "estado de saude": estado.lower().strip(),
         "data de chegada": datetime.today().strftime("%d/%m/%Y"),
-        "comportamento": input("Comportamento: ").lower().strip()
+        "comportamento": comportamento.lower().strip()
     }
 
     animais.append(animal)
@@ -234,9 +247,9 @@ def registrar_tarefa():
         if a['id'] == id_animal:
             animal = a
             break
-        else:
-            print("Animal não encontrado")
-            break
+    else:
+        print("Animal não encontrado")
+        return
 
     print("\nTipos de tarefa:")
     print("1 - Vacina\n")
