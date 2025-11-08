@@ -57,8 +57,14 @@ def carregar_animais():
 def adicionar_animal():
     limpar_tela()
     print("Digite as informações do animal:")
+    
+    while True:
+        nome=input("Nome: ")
+        if nome =="" or any(letra.isdigit()for letra in nome):
+            print("Nome não pode conter números e nem estra vazio.")
+        else:
+            break
 
-    nome=input("Nome: ")
     especie=input("Espécie: ")
     raça=input("Raça: ")
     while True:
