@@ -5,6 +5,53 @@ import os
 animais = []
 tarefas = []
 
+def menu_CRUD():
+    while True:
+        limpar_tela()
+        print("====== MENU PRINCIPAL ======")
+        print("1 - Adicionar Animal")
+        print("2 - Listar Animais")
+        print("3 - Editar Animal")
+        print("4 - Excluir Animal")
+        print("5 - Registrar Tarefa")
+        print("6 - Listar Tarefas")
+        print("7 - Editar Tarefa")
+        print("8 - Excluir Tarefa")
+        print("9 - Sair")
+
+        op = input("Escolha uma opção: ").strip()
+
+        if op == "1":
+            adicionar_animal()
+            input("\nPressione ENTER para voltar ao menu...")
+        elif op == "2":
+            listar_animais()
+            input("\nPressione ENTER para voltar ao menu...")
+        elif op == "3":
+            editar_animal()
+            input("\nPressione ENTER para voltar ao menu...")
+        elif op == "4":
+            excluir_animal()
+            input("\nPressione ENTER para voltar ao menu...")
+        elif op == "5":
+            registrar_tarefa()
+            input("\nPressione ENTER para voltar ao menu...")
+        elif op == "6":
+            listar_tarefas()
+            input("\nPressione ENTER para voltar ao menu...")
+        elif op == "7":
+            editar_tarefa()
+            input("\nPressione ENTER para voltar ao menu...")
+        elif op == "8":
+            excluir_tarefa()
+            input("\nPressione ENTER para voltar ao menu...")
+        elif op == "9":
+            print("Saindo...")
+            break
+        else:
+            print("Opção inválida.")
+            input("\nPressione ENTER para voltar ao menu...")
+
 def limpar_tela():
     os.system("cls" if os.name == "nt" else "clear")
 
@@ -57,16 +104,28 @@ def carregar_animais():
 def adicionar_animal():
     limpar_tela()
     print("Digite as informações do animal:")
-    
+
     while True:
         nome=input("Nome: ")
         if nome =="" or any(letra.isdigit()for letra in nome):
-            print("Nome não pode conter números e nem estra vazio.")
+            print("Nome não pode conter números e nem estar vazio.")
         else:
             break
 
-    especie=input("Espécie: ")
-    raça=input("Raça: ")
+    while True:
+        especie=input("Espécie: ")
+        if especie == "" or any(letra.isdigit()for letra in especie):
+            print("Espécie não pode conter números e nem estar vazio.")
+        else:
+            break
+
+    while True:
+        raça=input("Raça: ")
+        if raça == "" or any(letra.isdigit()for letra in raça):
+            print("Raça não pode conter números e nem estar vazio.") 
+        else:
+            break
+
     while True:
         idade_input=input("Idade: ")
         try:
@@ -77,8 +136,19 @@ def adicionar_animal():
                 break
         except ValueError:
             print("Invalidado! diga a idade na forma de um número inteiro!")
-    estado=input("Estado de saúde: ")
-    comportamento=input("Comportamento: ")
+    while True:
+        estado=input("Estado de saúde: ")
+        if estado == "" or any(letra.isdigit()for letra in estado):
+            print("Estado de saúde não pode conter números e nem estar vazio.")
+        else:
+            break
+
+    while True:
+        comportamento=input("Comportamento: ")
+        if comportamento == "" or any(letra.isdigit()for letra in comportamento):
+            print("Comportamento não pode conter números e nem estar vazio.")
+        else:
+            break
     
     animal = {
         "id": gerar_id(),
@@ -202,7 +272,7 @@ def excluir_animal():
     else:
         print("Animal não encontrado.")
 
-def salvar_trefas():
+def salvar_tarefas():
     with open("tarefas.txt", "w", encoding="utf8") as arquivo:
         for t in tarefas:
              arquivo.write(
@@ -279,7 +349,7 @@ def registrar_tarefa():
     }
 
     tarefas.append(tarefa)
-    salvar_trefas()
+    salvar_tarefas()
 
 def listar_tarefas():
     limpar_tela()
@@ -311,7 +381,6 @@ def editar_tarefa():
 
     print("Tarefas atuais:\n")
     for idx, t in enumerate(tarefas, start=1):
-        # mostra índice para facilitar edição
         nome_animal = "Desconhecido"
         for a in animais:
             if a.get('id') == t.get('id_animal'):
@@ -354,7 +423,7 @@ def editar_tarefa():
     if op in tipos:
         t['tipo_tarefa'] = tipos[op]
 
-    salvar_trefas()
+    salvar_tarefas()
     print("\nTarefa atualizada com sucesso!")
 
 def excluir_tarefa():
@@ -389,61 +458,12 @@ def excluir_tarefa():
     confirmar = input(f"Tem certeza que deseja excluir a tarefa '{tarefas[i].get('tipo_tarefa')}'? (s/n): ").strip().lower()
     if confirmar in ['s', 'sim']:
         tarefas.pop(i)
-        salvar_trefas()
+        salvar_tarefas()
         print("Tarefa excluída.")
     else:
         print("Exclusão cancelada.")
-
-def menu_tarefas():
-    print(("-"*10)+"MENU DE TAREFAS"+("-"*10))
-
-
-
+    
 carregar_tarefas()
 carregar_animais()
 
-while True:
-    limpar_tela()
-    print("====== MENU PRINCIPAL ======")
-    print("1 - Adicionar Animal")
-    print("2 - Listar Animais")
-    print("3 - Editar Animal")
-    print("4 - Excluir Animal")
-    print("5 - Registrar Tarefa")
-    print("6 - Listar Tarefas")
-    print("7 - Editar Tarefa")
-    print("8 - Excluir Tarefa")
-    print("9 - Sair")
-
-    op = input("Escolha uma opção: ").strip()
-
-    if op == "1":
-        adicionar_animal()
-        input("\nPressione ENTER para voltar ao menu...")
-    elif op == "2":
-        listar_animais()
-        input("\nPressione ENTER para voltar ao menu...")
-    elif op == "3":
-        editar_animal()
-        input("\nPressione ENTER para voltar ao menu...")
-    elif op == "4":
-        excluir_animal()
-        input("\nPressione ENTER para voltar ao menu...")
-    elif op == "5":
-        registrar_tarefa()
-        input("\nPressione ENTER para voltar ao menu...")
-    elif op == "6":
-        listar_tarefas()
-        input("\nPressione ENTER para voltar ao menu...")
-    elif op == "7":
-        editar_tarefa()
-        input("\nPressione ENTER para voltar ao menu...")
-    elif op == "8":
-        excluir_tarefa()
-        input("\nPressione ENTER para voltar ao menu...")
-    elif op == "9":
-        print("Saindo...")
-        break
-    else:
-        print("Opção inválida.")
-        input("\nPressione ENTER para voltar ao menu...")
+menu_CRUD()
