@@ -17,7 +17,8 @@ def menu_CRUD():
         print("6 - Listar Tarefas")
         print("7 - Editar Tarefa")
         print("8 - Excluir Tarefa")
-        print("9 - Sair")
+        print("9 - Exibir Alertas")
+        print("10- Sair")
 
         op = input("Escolha uma opção: ").strip()
 
@@ -46,6 +47,9 @@ def menu_CRUD():
             excluir_tarefa()
             input("\nPressione ENTER para voltar ao menu...")
         elif op == "9":
+            exibir_alerta()
+            input("\nPressione ENTER para voltar ao menu...")
+        elif op == "10":
             print("Saindo...")
             break
         else:
@@ -462,8 +466,56 @@ def excluir_tarefa():
         print("Tarefa excluída.")
     else:
         print("Exclusão cancelada.")
-    
+
+def dias_para_tarefa(data_prevista_str):
+    try:
+        data_prevista = datetime.strptime(data_prevista_str,"%d/%m/%Y" )
+        hoje = datetime.today()
+        return (data_prevista - hoje).days
+    except ValueError:
+        return None
+
+def exibir_alerta():
+    limpar_tela()
+    if not tarefas:
+        print("Nenhuma tarefa registrada.")
+        return 
+    print("===== ALERTAS E DIAS RESTANTES PARA AS PRÓXIMAS TAREFAS =====\n")
+
+    for t in tarefas:
+        dias = dias_para_tarefa(t["data_prevista"])
+        nome_animal = "Desconhecido"
+
+        for a in animais:
+            if a ["id"] == t["id_animal"]:
+                nome_animal = a["nome"]
+                break
+        
+        if dias is None:
+            status = f" Data inválida! ({t['data_prevista']})"
+        elif dias < 0:
+             status = f" Atrasada há {-dias} dia(s)! ({t['data_prevista']})"
+        elif dias <= 3:  
+            status = f" Faltam {dias} dia(s) — Tarefa está próxima! ({t['data_prevista']})"
+        else:
+             status = f"Faltam {dias} dia(s) ({t['data_prevista']})"
+
+        print(f"Animal: {nome_animal}")
+        print(f"Tarefa: {t['tipo_tarefa']}")
+        print(f"Responsável: {t['responsavel']}")
+        print(f"Status: {status}")
+        print("-" * 40)
+
+        
+
+
+
+
+
+
+
 carregar_tarefas()
 carregar_animais()
 
 menu_CRUD()
+
