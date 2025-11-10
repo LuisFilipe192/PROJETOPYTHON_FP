@@ -21,40 +21,40 @@ def menu_CRUD():
         print("10- Sair")
 
         op = input("Escolha uma opção: ").strip()
-
+        
         if op == "1":
             adicionar_animal()
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
         elif op == "2":
             listar_animais()
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
         elif op == "3":
             editar_animal()
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
         elif op == "4":
             excluir_animal()
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
         elif op == "5":
             registrar_tarefa()
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
         elif op == "6":
             listar_tarefas()
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
         elif op == "7":
             editar_tarefa()
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
         elif op == "8":
             excluir_tarefa()
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
         elif op == "9":
             exibir_alerta()
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
         elif op == "10":
             print("Saindo...")
             break
         else:
             print("Opção inválida.")
-            input("\nPressione ENTER para voltar ao menu...")
+            input("Pressione ENTER para voltar ao menu")
 
 def limpar_tela():
     os.system("cls" if os.name == "nt" else "clear")
@@ -200,6 +200,7 @@ def editar_animal():
     print("Animais cadastrados:")
     for animal in animais:
         print(f"ID: {animal['id']} \nNome: {animal['nome']} \nEspécie: {animal['espécie']}")
+        print("-"*50)
 
     id_busca = input("Digite o id do animal que deseja editar: ")
 
@@ -259,11 +260,11 @@ def excluir_animal():
         print(f"ID: {animal['id']} \nNome: {animal['nome']} \nEspécie: {animal['espécie']}")
 
     id_busca = input("Digite o id do animal que deseja excluir: ").strip()
-    for i, animal in enumerate(animais):
+    for animal in animais:
         if animal["id"] == id_busca:
             confirmar = input(f"Tem certeza que quer excluir {animal['nome']}? ").strip().lower()
             if confirmar in ["sim", "s"]:
-                animais.pop(i)
+                animais.remove(animal)
                 salvar_animais()
                 print(f"{animal['nome']} excluído com sucesso.")
                 break
