@@ -21,40 +21,48 @@ def menu_CRUD():
         print("10- Sair")
 
         op = input("Escolha uma opção: ").strip()
-        
+
         if op == "1":
             adicionar_animal()
-            input("Pressione ENTER para voltar ao menu")
         elif op == "2":
             listar_animais()
-            input("Pressione ENTER para voltar ao menu")
         elif op == "3":
             editar_animal()
-            input("Pressione ENTER para voltar ao menu")
         elif op == "4":
             excluir_animal()
-            input("Pressione ENTER para voltar ao menu")
         elif op == "5":
             registrar_tarefa()
-            input("Pressione ENTER para voltar ao menu")
         elif op == "6":
             listar_tarefas()
-            input("Pressione ENTER para voltar ao menu")
         elif op == "7":
             editar_tarefa()
-            input("Pressione ENTER para voltar ao menu")
         elif op == "8":
             excluir_tarefa()
-            input("Pressione ENTER para voltar ao menu")
         elif op == "9":
             exibir_alerta()
-            input("Pressione ENTER para voltar ao menu")
         elif op == "10":
             print("Saindo...")
             break
         else:
             print("Opção inválida.")
-            input("Pressione ENTER para voltar ao menu")
+        
+        escolha=input("Deseja voltar O MENU? (s/n) ").lower()
+        if escolha == "n":
+            break
+        elif escolha =="s":
+            continue
+        else:
+            print("Escolha invalida!")
+            while True:
+                esc=input("Deseja voltar O MENU? (s/n) ").lower()
+                if esc == "n":
+                    return
+                elif esc =="s":
+                    return menu_CRUD()
+                else:
+                    print("Opção inválida!")
+            
+
 
 def limpar_tela():
     os.system("cls" if os.name == "nt" else "clear")
