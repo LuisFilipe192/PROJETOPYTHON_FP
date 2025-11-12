@@ -129,7 +129,7 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 - Encerra o programa imediatamente
 - Tudo é salvo automaticamente
 
-## 👨‍💻 Autores do trabalho
+## Autores do trabalho
 
 | Nome | E-mail |
 |------|--------|
