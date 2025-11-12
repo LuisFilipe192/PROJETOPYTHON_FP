@@ -19,6 +19,7 @@ def menu_CRUD():
         print("8 - Excluir Tarefa")
         print("9 - Exibir Alertas")
         print("10- Sair")
+        print("11- Mostrar Atrasos")
 
         op = input("Escolha uma opção: ").strip()
 
@@ -43,6 +44,8 @@ def menu_CRUD():
         elif op == "10":
             print("Saindo...")
             break
+        elif op == "11":
+            atraso()
         else:
             print("Opção inválida.")
         
@@ -515,7 +518,21 @@ def exibir_alerta():
         print(f"Status: {status}")
         print("-" * 40)
 
-        
+def atraso():
+    atrasadas = []
+    for t in tarefas:
+        if dias_para_tarefa(t['data_prevista']) < 0:
+            atrasadas.append(t)
+    for t in atrasadas:
+        nome = ""
+        for a in animais:
+            if a["id"] == t["id_animal"]:
+                nome == a["nome"]
+                break
+        print(f"Animal: {nome}")
+        print(f"Tarefa: {t['tipo_tarefa']}")
+        print(f"Responsável: {t['responsavel']}")
+        print(f"Atrasada á {-(dias_para_tarefa(t['data_prevista']))} dias")
 
 
 
@@ -527,4 +544,5 @@ carregar_tarefas()
 carregar_animais()
 
 menu_CRUD()
+
 
