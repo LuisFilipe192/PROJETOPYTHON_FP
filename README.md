@@ -2,7 +2,7 @@
 
 ## Projeto: “Adoção+” – Sistema de Gestão de Centro de Adoção de Animais
 
->` para os interessados em entender como funciona esse crud de adoção de animais, e também entender suas limitações e consequentemente o jeito certo de como você poderá usa-lo ao `
+>`Para os interessados em entender como funciona esse crud de adoção de animais, e também entender o jeito certo de como você poderá usa-lo e manuzea-lo`
 
 Existem certas coisas que você como usuário pode fazer nesse programa para usa-lo da melhor maneira, dentre tais é ...
 
@@ -22,8 +22,9 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 8. Excluir Tarefa
 9. Exibir Alertas
 10. Sair
+11. Mostrar Atrasos
 
-- É recomendado escolher numeros ***Interiros*** entre 1 e 10 como mostrado acima
+- É recomendado escolher numeros ***Interiros*** entre 1 e 11 como mostrado acima
 
 ## 1. Adicionar Animal (Cadastro)
 
@@ -43,7 +44,8 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 4. Estado de saúde❌
 5. Comportamento❌
 
-- Em idade, só é aceito numeros **inteiros**
+- Em idade, só é aceito numeros **inteiros** do tipo positivo
+- Cada animal recebera um ID, gerado de forma automática
 
 ## 2. Listar Animais (Lista dos cadastros)
 
@@ -55,6 +57,7 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 - O sistema vai mostar os IDs dos animais cadastrados
 - Digite o ID dos animal que você vai querer alterar
 - Após o ENTER, as alterações serão salvas automaticamente
+- A *idade* ainda exigirá que você insira um numero inteiro positivo
 
 ## 4. Excluir animal (Deleta da lista)
 
@@ -96,9 +99,15 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 
 - Exibe uma lista com todas as tarefas atribuídas
 - Digite o dígito com o número da tarefa que deseja editar
+- Você poderá alterar:
+
+>- Data
+>- Responsável
+>- Tipo de tarefa
+
 - Após o ENTER as alterações são salvas altumaticamente
 
-## 8. Excluir tarefa (deleta a uma tarefa da lista)
+## 8. Excluir tarefa (deleta uma tarefa da lista)
 
 - Escolha o número da tarefa, para ser excluida
 - Após isso aparecerá um menu de ***confirmação***
@@ -117,7 +126,7 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 >- Responsável
 >- Dias restantes ou atraso
 
-- Irá exibir na tela dessa maneira
+- A mensagem poderá ser exibida na tela dessas maneira
 
 >- “Faltam X dia(s)” → tarefa futura
 >- “Tarefa está próxima!” → 3 dias ou menos
@@ -129,7 +138,17 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 - Encerra o programa imediatamente
 - Tudo é salvo automaticamente
 
-## Autores do trabalho
+## 11. Mostrar Tarefas
+
+- Isso exibirá, somente as tarefas que estão atrasadas
+- Mostra as seguintes informações:
+
+>- Nome do animal
+>- Tipo de tarefa
+>- O responsável
+>- Quanto tempo de atraso (em dias)
+
+## 👨‍💻Autores do trabalho👨‍💻
 
 | Nome | E-mail |
 |------|--------|
