@@ -1,8 +1,11 @@
 from datetime import datetime
 import random
 import os
+
 animais = []
 tarefas = []
+
+
 def menu_CRUD():
     while True:
         limpar_tela()
@@ -47,7 +50,7 @@ def menu_CRUD():
         else:
             print("Opção inválida.")
 
-        escolha=input("Deseja voltar O MENU? (s/n) ").lower()
+        escolha = input("Deseja voltar O MENU? (s/n) ").lower()
         if escolha == "n":
             break
         elif escolha =="s":
@@ -55,20 +58,23 @@ def menu_CRUD():
         else:
             print("Escolha invalida!")
             while True:
-                esc=input("Deseja voltar O MENU? (s/n) ").lower()
+                esc = input("Deseja voltar O MENU? (s/n) ").lower()
                 if esc == "n":
                     return
                 elif esc =="s":
                     return menu_CRUD()
                 else:
                     print("Opção inválida!")
+
             
 def limpar_tela():
     os.system("cls" if os.name == "nt" else "clear")
 def gerar_id():
     return str(random.randint(1000, 9999))
+
+
 def salvar_animais():
-    with open("animais.txt", "w", encoding="utf8") as arquivo:
+    with open("animais.txt", "w", encoding = "utf8") as arquivo:
         for animal in animais:
             arquivo.write(
                 f"Id: {animal['id']}\n"
@@ -80,11 +86,13 @@ def salvar_animais():
                 f"Data de chegada: {animal['data de chegada']}\n"
                 f"Comportamento: {animal['comportamento']}\n\n"
             )
+
+
 def carregar_animais():
     
     animais.clear()
     try:
-        arquivo = open("animais.txt", "r", encoding="utf8")
+        arquivo = open("animais.txt", "r", encoding = "utf8")
         linhas = arquivo.readlines()
     except FileNotFoundError:
         return print("arquivo não encontrado")
@@ -96,38 +104,39 @@ def carregar_animais():
         if linha == "":
             if animal:
                 animais.append(animal)
-                animal={}
+                animal = {}
         else:
             chave, valor = linha.split(":", 1)
             animal[chave.strip().lower()] = valor.strip()
     if animal:
         animais.append(animal)
               
+
 def adicionar_animal():
     limpar_tela()
-    print("Digite as informações do animal:")
+    print("Digite as informações do animal: ")
     while True:
-        nome=input("Nome: ")
-        if nome =="" or any(letra.isdigit()for letra in nome):
+        nome = input("Nome: ")
+        if nome == "" or any(letra.isdigit()for letra in nome):
             print("Nome não pode conter números e nem estar vazio.")
         else:
             break
     while True:
-        especie=input("Espécie: ")
+        especie = input("Espécie: ")
         if especie == "" or any(letra.isdigit()for letra in especie):
             print("Espécie não pode conter números e nem estar vazio.")
         else:
             break
     while True:
-        raça=input("Raça: ")
+        raça = input("Raça: ")
         if raça == "" or any(letra.isdigit()for letra in raça):
             print("Raça não pode conter números e nem estar vazio.") 
         else:
             break
     while True:
-        idade_input=input("Idade: ")
+        idade_input = input("Idade: ")
         try:
-            idade=int(idade_input)
+            idade = int(idade_input)
             if idade < 0:
                 print("Numero invalido! Não existe idade negativa!")
             else:
@@ -135,13 +144,13 @@ def adicionar_animal():
         except ValueError:
             print("Invalidado! diga a idade na forma de um número inteiro!")
     while True:
-        estado=input("Estado de saúde: ")
+        estado = input("Estado de saúde: ")
         if estado == "" or any(letra.isdigit()for letra in estado):
             print("Estado de saúde não pode conter números e nem estar vazio.")
         else:
             break
     while True:
-        comportamento=input("Comportamento: ")
+        comportamento = input("Comportamento: ")
         if comportamento == "" or any(letra.isdigit()for letra in comportamento):
             print("Comportamento não pode conter números e nem estar vazio.")
         else:
@@ -157,8 +166,9 @@ def adicionar_animal():
         "data de chegada": datetime.today().strftime("%d/%m/%Y"),
         "comportamento": comportamento.lower().strip()
     }
+
     animais.append(animal)
-    arquivo=open("animais.txt","a",encoding="utf8")
+    arquivo = open("animais.txt","a",encoding = "utf8")
     arquivo.write(
         f"Id: {animal['id']}\n"
         f"Nome: {animal['nome']}\n"
@@ -170,6 +180,8 @@ def adicionar_animal():
         f"Comportamento: {animal['comportamento']}\n\n")
     arquivo.close()
     print(f"Animal {animal['nome']} adicionado com sucesso!")
+
+
 def listar_animais():
     limpar_tela()
     if len(animais) == 0:
@@ -177,19 +189,29 @@ def listar_animais():
         return
     print("Lista de Animais:\n")
     for a in animais:
-        print(f"ID: {a['id']}\nNome: {a['nome']}\nEspécie: {a['espécie']}\nRaça: {a['raça']}\n"
-              f"Idade: {a['idade']}\nSaúde: {a['estado de saude']}\nChegada: {a['data de chegada']}\n"
-              f"Comportamento: {a['comportamento']}\n{'-'*40}")
+        print(f"ID: {a['id']}\n"
+              f"Nome: {a['nome']}\n"
+              f"Espécie: {a['espécie']}\n"
+              f"Raça: {a['raça']}\n"
+              f"Idade: {a['idade']}\n"
+              f"Saúde: {a['estado de saude']}\n"
+              f"Chegada: {a['data de chegada']}\n"
+              f"Comportamento: {a['comportamento']}\n"
+              f"{"-"*40}")
+        
+
 def editar_animal():
     limpar_tela()
     print("Animais cadastrados:")
     for animal in animais:
-        print(f"ID: {animal['id']} \nNome: {animal['nome']} \nEspécie: {animal['espécie']}")
-        print("-"*50)
+        print(f"ID: {animal['id']}\n"
+              f"Nome: {animal['nome']}\n"
+              f"Espécie: {animal['espécie']}\n"
+              f"{"-"*50}")
     id_busca = input("Digite o id do animal que deseja editar: ")
     for animal in animais:
         if animal["id"] == id_busca:
-            print(f"Editando informações de {animal['nome']}: ")
+            print(f"Editando informações de {animal["nome"]}: ")
             novo_nome = input("Novo nome (ou Enter para manter): ")
             if novo_nome != "":
                 animal["nome"] = novo_nome
@@ -223,6 +245,8 @@ def editar_animal():
             break
     else:
         print("Animal não encontrado.")
+
+
 def excluir_animal():
     limpar_tela()
     if len(animais) == 0:
@@ -230,11 +254,13 @@ def excluir_animal():
         return
     print("Animais cadastrados:")
     for animal in animais:
-        print(f"ID: {animal['id']} \nNome: {animal['nome']} \nEspécie: {animal['espécie']}")
+        print(f"ID: {animal['id']}\n"
+              f"Nome: {animal['nome']} \n"
+              f"Espécie: {animal['espécie']}")
     id_busca = input("Digite o id do animal que deseja excluir: ").strip()
     for animal in animais:
         if animal["id"] == id_busca:
-            confirmar = input(f"Tem certeza que quer excluir {animal['nome']}? ").strip().lower()
+            confirmar = input(f"Tem certeza que quer excluir {animal["nome"]}?\n(s/n): ").strip().lower()
             if confirmar in ["sim", "s"]:
                 animais.remove(animal)
                 salvar_animais()
@@ -248,8 +274,10 @@ def excluir_animal():
                 break
     else:
         print("Animal não encontrado.")
+
+
 def salvar_tarefas():
-    with open("tarefas.txt", "w", encoding="utf8") as arquivo:
+    with open("tarefas.txt", "w", encoding = "utf8") as arquivo:
         for t in tarefas:
              arquivo.write(
                 f"Id Animal: {t['id_animal']}\n"
@@ -257,9 +285,11 @@ def salvar_tarefas():
                 f"Data prevista: {t['data_prevista']}\n"
                 f"Responsável: {t['responsavel']}\n\n"
             )
+             
+
 def carregar_tarefas():
     try:
-        with open("tarefas.txt", "r", encoding="utf8") as arquivo:
+        with open("tarefas.txt", "r", encoding = "utf8") as arquivo:
             linhas = arquivo.readlines()
     except FileNotFoundError:
         return
@@ -276,15 +306,17 @@ def carregar_tarefas():
         tarefa[chave.strip().lower()] = valor.strip()
     if tarefa:
         tarefas.append(tarefa)
+
+
 def registrar_tarefa():
     limpar_tela()
-    if len(animais)== 0 :
+    if len(animais) == 0 :
         print("Nenhum animal cadastrado")
         return
     
     print("Animais disponiveis")
     for a in animais:
-        print(f"{a['id']} - {a['nome']} ({a['espécie']})") 
+        print(f"{a["id"]} - {a["nome"]} ({a["espécie"]})") 
     id_animal = input("\nDigite o ID do animal que deseja registrar uma tarefa: ").strip()
     
     for a in animais:
@@ -303,8 +335,19 @@ def registrar_tarefa():
     opc = input("Escolha o tipo de tarefa: ").strip()
     tipos = {"1": "Vacina", "2": "Banho", "3": "Consulta veterinária", "4": "Treino", "5": "Outra"}
     tipo_tarefa = tipos.get(opc)
-    data_prevista = input("Data prevista (DD/MM/AAAA): ").strip()
-    responsavel = input("Responsavel: ").strip()
+    while True:
+        data_prevista = input("Data prevista (DD/MM/AAAA): ").strip()
+        try:
+            datetime.strptime(data_prevista, "%d/%m/%Y")
+            break
+        except ValueError:
+            print("Data inválida! Digite no formato DD/MM/AAAA e usando uma data real.")
+    while True:
+        responsavel = input("Responsável: ").strip()
+        if responsavel == "" or any(c.isdigit() for c in responsavel):
+            print("Responsável não pode conter números e nem estar vazio.")
+        else:
+            break
     tarefa = {
         "id_animal": id_animal,
         "tipo_tarefa": tipo_tarefa,
@@ -313,6 +356,8 @@ def registrar_tarefa():
     }
     tarefas.append(tarefa)
     salvar_tarefas()
+
+
 def listar_tarefas():
     limpar_tela()
     if len(tarefas) == 0:
@@ -326,10 +371,12 @@ def listar_tarefas():
                 nome_animal = a["nome"]
                 break
         print(f"Animal: {nome_animal}")
-        print(f"Tarefa: {t['tipo_tarefa']}")
-        print(f"Data prevista: {t['data_prevista']}")
-        print(f"Responsável: {t['responsavel']}")
+        print(f"Tarefa: {t["tipo_tarefa"]}")
+        print(f"Data prevista: {t["data_prevista"]}")
+        print(f"Responsável: {t["responsavel"]}")
         print("-" * 40)
+
+
 def editar_tarefa():
     limpar_tela()
     if not tarefas:
@@ -339,10 +386,10 @@ def editar_tarefa():
     for idx, t in enumerate(tarefas, start=1):
         nome_animal = "Desconhecido"
         for a in animais:
-            if a.get('id') == t.get('id_animal'):
-                nome_animal = a.get('nome')
+            if a.get("id") == t.get("id_animal"):
+                nome_animal = a.get("nome")
                 break
-        print(f"{idx} - Animal: {nome_animal} | Tarefa: {t.get('tipo_tarefa')} | Data: {t.get('data_prevista')} | Responsável: {t.get('responsavel')}")
+        print(f"{idx} - Animal: {nome_animal} | Tarefa: {t.get("tipo_tarefa")} | Data: {t.get("data_prevista")} | Responsável: {t.get("responsavel")}")
     escolha = input("\nDigite o número da tarefa que deseja editar (ou Enter para cancelar): ").strip()
     if escolha == "":
         print("Edição cancelada.")
@@ -357,24 +404,26 @@ def editar_tarefa():
         return
     t = tarefas[i]
     print("\nDeixe em branco para manter o valor atual.")
-    nova_data = input(f"Data prevista [{t.get('data_prevista')}]: ").strip()
+    nova_data = input(f"Data prevista [{t.get("data_prevista")}]: ").strip()
     if nova_data != "":
-        t['data_prevista'] = nova_data
-    novo_responsavel = input(f"Responsável [{t.get('responsavel')}]: ").strip()
+        t["data_prevista"] = nova_data
+    novo_responsavel = input(f"Responsável [{t.get("responsavel")}]: ").strip()
     if novo_responsavel != "":
-        t['responsavel'] = novo_responsavel
+        t["responsavel"] = novo_responsavel
     print("\nTipos de tarefa:")
     print("1 - Vacina")
     print("2 - Banho")
     print("3 - Consulta veterinária")
     print("4 - Treino")
     print("5 - Outra")
-    op = input(f"Tipo atual [{t.get('tipo_tarefa')}], escolha novo tipo (1-5) ou Enter para manter: ").strip()
+    op = input(f"Tipo atual [{t.get("tipo_tarefa")}], escolha novo tipo (1-5) ou Enter para manter: ").strip()
     tipos = {"1": "Vacina", "2": "Banho", "3": "Consulta veterinária", "4": "Treino", "5": "Outra"}
     if op in tipos:
-        t['tipo_tarefa'] = tipos[op]
+        t["tipo_tarefa"] = tipos[op]
     salvar_tarefas()
     print("\nTarefa atualizada com sucesso!")
+
+
 def excluir_tarefa():
     limpar_tela()
     if not tarefas:
@@ -384,10 +433,10 @@ def excluir_tarefa():
     for idx, t in enumerate(tarefas, start=1):
         nome_animal = "Desconhecido"
         for a in animais:
-            if a.get('id') == t.get('id_animal'):
+            if a.get('id') == t.get("id_animal"):
                 nome_animal = a.get('nome')
                 break
-        print(f"{idx} - Animal: {nome_animal} | Tarefa: {t.get('tipo_tarefa')} | Data: {t.get('data_prevista')} | Responsável: {t.get('responsavel')}")
+        print(f"{idx} - Animal: {nome_animal} | Tarefa: {t.get("tipo_tarefa")} | Data: {t.get("data_prevista")} | Responsável: {t.get("responsavel")}")
     escolha = input("\nDigite o número da tarefa que deseja excluir (ou Enter para cancelar): ").strip()
     if escolha == "":
         print("Exclusão cancelada.")
@@ -400,13 +449,15 @@ def excluir_tarefa():
     except ValueError:
         print("Entrada inválida.")
         return
-    confirmar = input(f"Tem certeza que deseja excluir a tarefa '{tarefas[i].get('tipo_tarefa')}'? (s/n): ").strip().lower()
-    if confirmar in ['s', 'sim']:
+    confirmar = input(f"Tem certeza que deseja excluir a tarefa '{tarefas[i].get("tipo_tarefa")}'? (s/n): ").strip().lower()
+    if confirmar in ["s", "sim"]:
         tarefas.pop(i)
         salvar_tarefas()
         print("Tarefa excluída.")
     else:
         print("Exclusão cancelada.")
+
+
 def dias_para_tarefa(data_prevista_str):
     try:
         data_prevista = datetime.strptime(data_prevista_str,"%d/%m/%Y" )
@@ -414,6 +465,8 @@ def dias_para_tarefa(data_prevista_str):
         return (data_prevista - hoje).days
     except ValueError:
         return None
+    
+
 def exibir_alerta():
     limpar_tela()
     if not tarefas:
@@ -429,16 +482,16 @@ def exibir_alerta():
                 break
         
         if dias is None:
-            status = f" Data inválida! ({t['data_prevista']})"
+            status = f" Data inválida! ({t["data_prevista"]})"
         elif dias < 0:
-             status = f" Atrasada há {-dias} dia(s)! ({t['data_prevista']})"
+             status = f" Atrasada há {-dias} dia(s)! ({t["data_prevista"]})"
         elif dias <= 3:  
-            status = f" Faltam {dias} dia(s) — Tarefa está próxima! ({t['data_prevista']})"
+            status = f" Faltam {dias} dia(s) — Tarefa está próxima! ({t["data_prevista"]})"
         else:
-             status = f"Faltam {dias} dia(s) ({t['data_prevista']})"
+             status = f"Faltam {dias} dia(s) ({t["data_prevista"]})"
         print(f"Animal: {nome_animal}")
-        print(f"Tarefa: {t['tipo_tarefa']}")
-        print(f"Responsável: {t['responsavel']}")
+        print(f"Tarefa: {t["tipo_tarefa"]}")
+        print(f"Responsável: {t["responsavel"]}")
         print(f"Status: {status}")
         print("-" * 40)
 
@@ -446,7 +499,7 @@ def exibir_alerta():
 def atraso():
     atrasadas = []
     for t in tarefas:
-        if dias_para_tarefa(t['data_prevista']) < 0:
+        if dias_para_tarefa(t["data_prevista"]) < 0:
             atrasadas.append(t)
     for t in atrasadas:
         nome = ""
@@ -455,9 +508,9 @@ def atraso():
                 nome = a["nome"]
                 break
         print(f"Animal: {nome}")
-        print(f"Tarefa: {t['tipo_tarefa']}")
-        print(f"Responsável: {t['responsavel']}")
-        print(f"Atrasada á {-(dias_para_tarefa(t['data_prevista']))} dias")
+        print(f"Tarefa: {t["tipo_tarefa"]}")
+        print(f"Responsável: {t["responsavel"]}")
+        print(f"Atrasada á {-(dias_para_tarefa(t["data_prevista"]))} dias")
 
 
 
