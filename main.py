@@ -6,6 +6,12 @@ animais = []
 tarefas = []
 historico = []
 
+def id_existe(novo_id):
+    for animal in animais:
+        if animal["id"] == novo_id:
+            return True 
+    return False 
+
 def menu_CRUD():
     while True:
         limpar_tela()
@@ -75,8 +81,12 @@ def menu_CRUD():
             
 def limpar_tela():
     os.system("cls" if os.name == "nt" else "clear")
+
 def gerar_id():
-    return str(random.randint(1000, 9999))
+    while True:
+        novo_id = str(random.randint(1000, 9999))
+        if not id_existe(novo_id):
+            return novo_id
 
 
 def salvar_animais():
