@@ -4,7 +4,7 @@ import os
 
 animais = []
 tarefas = []
-
+historico = []
 
 def menu_CRUD():
     while True:
@@ -21,7 +21,9 @@ def menu_CRUD():
         print("9 - Exibir Alertas")
         print("10- Sair")
         print("11- Mostrar Atrasos")
-
+        print("12- Registrar Histórico Médico")
+        print("13- Listar Histórico Médico")
+        
         op = input("Escolha uma opção: ").strip()
 
         if op == "1":
@@ -47,6 +49,10 @@ def menu_CRUD():
             break
         elif op == "11":
             atraso()
+        elif op == "12":
+            registrar_historico()
+        elif op == "13":
+            listar_historico()
         else:
             print("Opção inválida.")
 
@@ -308,6 +314,126 @@ def carregar_tarefas():
         tarefas.append(tarefa)
 
 
+def salvar_historico():
+    with open("historico_medico.txt", "w", encoding = "utf8") as arquivo:
+        for item in historico:
+            arquivo.write(
+                f"Id Animal: {item['id_animal']}\n"
+                f"Data: {item['data']}\n"
+                f"Tipo Evento: {item['tipo_evento']}\n"
+                f"Detalhes: {item['detalhes']}\n\n"
+            )
+
+
+def carregar_historico():
+    try:
+        with open("historico_medico.txt", "r", encoding="utf8") as arquivo:
+            linhas = arquivo.readlines()
+    except FileNotFoundError:
+        return
+    historico.clear()
+    item = {}
+    for linha in linhas:
+        linha = linha.strip()
+        if not linha:
+            if item:
+                historico.append(item)
+                item = {}
+            continue
+        try:
+            chave, valor = linha.split(":", 1)
+            item[chave.strip().lower()] = valor.strip()
+        except ValueError:
+            continue
+    if item:
+        historico.append(item)
+
+
+
+def registrar_historico():
+    limpar_tela()
+    if not animais:
+        print("Nenhum animal cadastrado. Adicione um animal primeiro.")
+        return
+    
+    print("Animais disponíveis:")
+    for a in animais:
+        print(f"{a['id']} - {a['nome']} ({a['espécie']})") 
+        
+    id_animal = input("\nDigite o ID do animal para registrar o histórico: ").strip()
+    
+    nome_animal = ""
+    for a in animais:
+        if a["id"] == id_animal:
+            nome_animal = a["nome"]
+            break
+    else:
+        print("Animal não encontrado")
+        return
+
+    print(f"\n--- Registrando Histórico para {nome_animal} ---")
+    
+    while True:
+        data_evento = input("Data do Evento (DD/MM/AAAA): ").strip()
+        try:
+            datetime.strptime(data_evento, "%d/%m/%Y")
+            break
+        except ValueError:
+            print("Data inválida! Digite no formato DD/MM/AAAA e usando uma data real.")
+
+    tipo_evento = input("Tipo de Evento (Ex: Vacina, Castração, Cirurgia, Medicamento): ").strip()
+    detalhes = input("Detalhes/Descrição do Evento: ").strip()
+
+    item_historico = {
+        "id_animal": id_animal,
+        "data": data_evento,
+        "tipo_evento": tipo_evento,
+        "detalhes": detalhes
+    }
+    
+    historico.append(item_historico)
+    salvar_historico()
+    print(f"\nHistórico médico para {nome_animal} registrado com sucesso!")
+
+def listar_historico():
+    limpar_tela()
+    if not historico:
+        print("Nenhum registro de histórico médico encontrado.")
+        return
+    
+    print("Animais com Histórico Registrado:")
+    ids_com_historico = {item['id_animal'] for item in historico}
+    
+    if not ids_com_historico:
+        print("Nenhum registro de histórico médico encontrado.")
+        return
+
+    for a in animais:
+        if a['id'] in ids_com_historico:
+            print(f"{a['id']} - {a['nome']} ({a['espécie']})") 
+            
+    id_busca = input("\nDigite o ID do animal para listar o Histórico Médico: ").strip()
+
+    nome_animal = next((a['nome'] for a in animais if a['id'] == id_busca), "Desconhecido")
+    
+    registros_animal = [item for item in historico if item['id_animal'] == id_busca]
+    
+    if not registros_animal:
+        print(f"\nNenhum registro de histórico médico encontrado para o animal ID {id_busca} ({nome_animal}).")
+        return
+
+    print(f"\n===== HISTÓRICO MÉDICO DE {nome_animal.upper()} =====\n")
+    
+    registros_ordenados = sorted(registros_animal, key=lambda x: datetime.strptime(x['data'], "%d/%m/%Y"), reverse=True)
+    
+    for idx, item in enumerate(registros_ordenados, 1):
+        print(f"--- Evento {idx} ---")
+        print(f"Data: {item['data']}")
+        print(f"Tipo: {item['tipo_evento']}")
+        print(f"Detalhes: {item['detalhes']}")
+        print("-" * 20)
+
+
 def registrar_tarefa():
     limpar_tela()
     if len(animais) == 0 :
@@ -516,5 +642,6 @@ def atraso():
 
 carregar_tarefas()
 carregar_animais()
+carregar_historico()
 
 menu_CRUD()
