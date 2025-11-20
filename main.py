@@ -502,9 +502,19 @@ def registrar_tarefa():
     print("3 - Consulta veterinária\n")
     print("4 - Treino\n")
     print("5 - Outra\n")
-    opc = input("Escolha o tipo de tarefa: ").strip()
+    
     tipos = {"1": "Vacina", "2": "Banho", "3": "Consulta veterinária", "4": "Treino", "5": "Outra"}
-    tipo_tarefa = tipos.get(opc)
+   
+    while True:
+        opc = input("Escolha o tipo de tarefa: ").strip()
+        
+        tipo_tarefa = tipos.get(opc) 
+        
+        if tipo_tarefa:
+            break
+        else:
+            print("Opção inválida! Escolha um número de 1 a 5.")
+     
     while True:
         data_prevista = input("Data prevista (DD/MM/AAAA): ").strip()
         try:
