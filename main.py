@@ -220,47 +220,81 @@ def editar_animal():
     limpar_tela()
     print("Animais cadastrados:")
     for animal in animais:
-        print(f"ID: {animal['id']}\n"
-              f"Nome: {animal['nome']}\n"
-              f"Espécie: {animal['espécie']}\n"
+        print(f"ID: {animal["id"]}\n"
+              f"Nome: {animal["nome"]}\n"
+              f"Espécie: {animal["espécie"]}\n"
               f"{"-"*50}")
     id_busca = input("Digite o id do animal que deseja editar: ")
-    for animal in animais:
-        if animal["id"] == id_busca:
-            print(f"Editando informações de {animal["nome"]}: ")
-            novo_nome = input("Novo nome (ou Enter para manter): ")
-            if novo_nome != "":
-                animal["nome"] = novo_nome
-            nova_especie = input("Nova espécie (ou Enter para manter): ")
-            if nova_especie != "":
-                animal["espécie"] = nova_especie
-            nova_raca = input("Nova raça (ou Enter para manter): ")
-            if nova_raca != "":
-                animal["raça"] = nova_raca
-            while True:
-                nova_idade = input("Nova idade (ou Enter para manter): ").strip()
-                if nova_idade == "":
-                    break
-                try:
-                    idade = int(nova_idade)
-                    if idade < 0:
-                        print("Idade não pode ser negativa. Tente novamente.")
-                    else:
-                        animal["idade"] = idade
-                        break
-                except ValueError:
-                    print("Entrada inválida! Digite um número inteiro para a idade ou Enter para manter.")
-            nova_saude = input("Novo estado de saúde (ou Enter para manter): ")
-            if nova_saude != "":
-                animal["estado de saude"] = nova_saude
-            novo_comportamento = input("Novo comportamento (ou Enter para manter): ")
-            if novo_comportamento != "":
-                animal["comportamento"] = novo_comportamento
-            print(f"Animal {animal['nome']} atualizado com sucesso!\n")
-            salvar_animais()
+
+    for a in animais:
+        if a["id"] == id_busca:
+            animal = a
             break
     else:
         print("Animal não encontrado.")
+        return
+    print("\nDeixe em branco caso não deseje alterar e pressione Enter para continuar.\n")
+    while True:
+        nome = input(f"Nome atual - {animal["nome"]}: ").strip()
+        if nome == "":
+            break
+        if any(c.isdigit() for c in nome):
+            print("\nNão pode ter números.\n")
+        else:
+            animal["nome"] = nome.lower()
+            break
+    while True:
+        especie = input(f"Espécie atual - {animal["espécie"]}: ").strip()
+        if especie == "":
+            break
+        if any(c.isdigit() for c in especie):
+            print("\nNão pode ter números.\n")
+        else:
+            animal["espécie"] = especie.lower()
+            break
+    while True:
+        raca = input(f"Raça atual - {animal["raça"]}: ").strip()
+        if raca == "":
+            break
+        if any(c.isdigit() for c in raca):
+            print("\nNão pode ter números.\n")
+        else:
+            animal["raça"] = raca.lower()
+            break
+    while True:
+        idade_input = input(f"Idade atual - {animal["idade"]}: ").strip()
+        if idade_input == "":
+            break
+        try:
+            idade = int(idade_input)
+            if idade < 0:
+                print("\nNão pode ser um valor negativo.\n")
+            else:
+                animal["idade"] = str(idade)
+                break
+        except ValueError:
+            print("\nTem que ser um número inteiro\n")
+    while True:
+        estado = input(f"Estado de saúde atual - {animal["estado de saude"]}: ").strip()
+        if estado == "":
+            break
+        if any(c.isdigit() for c in estado):
+            print("\nNão pode ter números.\n")
+        else:
+            animal["estado de saude"] = estado.lower()
+            break
+    while True:
+        comportamento = input(f"Comportamento atual - {animal["comportamento"]}: ").strip()
+        if comportamento == "":
+            break
+        if any(c.isdigit() for c in comportamento):
+            print("\nNão pode ter números.\n")
+        else:
+            animal["comportamento"] = comportamento.lower()
+            break
+
+    salvar_animais()
+    print("Animal atualizado")
 
 
 def excluir_animal():
