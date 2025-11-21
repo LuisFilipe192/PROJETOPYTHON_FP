@@ -213,17 +213,17 @@ def listar_animais():
               f"Saúde: {a['estado de saude']}\n"
               f"Chegada: {a['data de chegada']}\n"
               f"Comportamento: {a['comportamento']}\n"
-              f"{"-"*40}")
+              f"{'-'*40}")
         
 
 def editar_animal():
     limpar_tela()
     print("Animais cadastrados:")
     for animal in animais:
-        print(f"ID: {animal["id"]}\n"
-              f"Nome: {animal["nome"]}\n"
-              f"Espécie: {animal["espécie"]}\n"
-              f"{"-"*50}")
+        print(f"ID: {animal['id']}\n"
+              f"Nome: {animal['nome']}\n"
+              f"Espécie: {animal['espécie']}\n"
+              f"{'-'*50}")
     id_busca = input("Digite o id do animal que deseja editar: ")
 
     for a in animais:
@@ -235,7 +235,7 @@ def editar_animal():
         return
     print("\nDeixe em branco caso não deseje alterar e pressione Enter para continuar.\n")
     while True:
-        nome = input(f"Nome atual - {animal["nome"]}: ").strip()
+        nome = input(f"Nome atual - {animal['nome']}: ").strip()
         if nome == "":
             break
         if any(c.isdigit() for c in nome):
@@ -244,7 +244,7 @@ def editar_animal():
             animal["nome"] = nome.lower()
             break
     while True:
-        especie = input(f"Espécie atual - {animal["espécie"]}: ").strip()
+        especie = input(f"Espécie atual - {animal['espécie']}: ").strip()
         if especie == "":
             break
         if any(c.isdigit() for c in especie):
@@ -253,7 +253,7 @@ def editar_animal():
             animal["espécie"] = especie.lower()
             break
     while True:
-        raca = input(f"Raça atual - {animal["raça"]}: ").strip()
+        raca = input(f"Raça atual - {animal['raça']}: ").strip()
         if raca == "":
             break
         if any(c.isdigit() for c in raca):
@@ -262,7 +262,7 @@ def editar_animal():
             animal["raça"] = raca.lower()
             break
     while True:
-        idade_input = input(f"Idade atual - {animal["idade"]}: ").strip()
+        idade_input = input(f"Idade atual - {animal['idade']}: ").strip()
         if idade_input == "":
             break
         try:
@@ -275,7 +275,7 @@ def editar_animal():
         except ValueError:
             print("\nTem que ser um número inteiro\n")
     while True:
-        estado = input(f"Estado de saúde atual - {animal["estado de saude"]}: ").strip()
+        estado = input(f"Estado de saúde atual - {animal['estado de saude']}: ").strip()
         if estado == "":
             break
         if any(c.isdigit() for c in estado):
@@ -284,7 +284,7 @@ def editar_animal():
             animal["estado de saude"] = estado.lower()
             break
     while True:
-        comportamento = input(f"Comportamento atual - {animal["comportamento"]}: ").strip()
+        comportamento = input(f"Comportamento atual - {animal['comportamento']}: ").strip()
         if comportamento == "":
             break
         if any(c.isdigit() for c in comportamento):
@@ -395,7 +395,6 @@ def carregar_historico():
         historico.append(item)
 
 
-
 def registrar_historico():
     limpar_tela()
     if not animais:
@@ -441,6 +440,7 @@ def registrar_historico():
     salvar_historico()
     print(f"\nHistórico médico para {nome_animal} registrado com sucesso!")
 
+
 def listar_historico():
     limpar_tela()
     if not historico:
@@ -482,48 +482,49 @@ def listar_historico():
 
 def registrar_tarefa():
     limpar_tela()
-    if len(animais) == 0 :
+    if len(animais) == 0:
         print("Nenhum animal cadastrado")
         return
     
-    print("Animais disponiveis")
+    print("Animais disponíveis:")
     for a in animais:
-        print(f"{a["id"]} - {a["nome"]} ({a["espécie"]})") 
+        print(f"{a['id']} - {a['nome']} ({a['espécie']})")
     id_animal = input("\nDigite o ID do animal que deseja registrar uma tarefa: ").strip()
-    
+
     for a in animais:
-        if a['id'] == id_animal:
+        if a["id"] == id_animal:
             animal = a
             break
     else:
-        print("Animal não encontrado")
+        print("Animal não encontrado.")
         return
+
     print("\nTipos de tarefa:")
-    print("1 - Vacina\n")
-    print("2 - Banho\n")
-    print("3 - Consulta veterinária\n")
-    print("4 - Treino\n")
-    print("5 - Outra\n")
-    
+    print("1 - Vacina")
+    print("2 - Banho")
+    print("3 - Consulta veterinária")
+    print("4 - Treino")
+    print("5 - Outra")
+
     tipos = {"1": "Vacina", "2": "Banho", "3": "Consulta veterinária", "4": "Treino", "5": "Outra"}
-   
     while True:
         opc = input("Escolha o tipo de tarefa: ").strip()
-        
         tipo_tarefa = tipos.get(opc) 
-        
         if tipo_tarefa:
             break
         else:
             print("Opção inválida! Escolha um número de 1 a 5.")
-     
+
     while True:
         data_prevista = input("Data prevista (DD/MM/AAAA): ").strip()
         try:
-            datetime.strptime(data_prevista, "%d/%m/%Y")
+            data_tarefa = datetime.strptime(data_prevista, "%d/%m/%Y").date()
+            if data_tarefa < datetime.today().date():
+                print("A data não pode estar no passado.")
+                continue
             break
         except ValueError:
-            print("Data inválida! Digite no formato DD/MM/AAAA e usando uma data real.")
+            print("Digite no formato DD/MM/AAAA usando uma data real.")
     while True:
         responsavel = input("Responsável: ").strip()
         if responsavel == "" or any(c.isdigit() for c in responsavel):
@@ -536,8 +537,10 @@ def registrar_tarefa():
         "data_prevista": data_prevista,
         "responsavel": responsavel
     }
+
     tarefas.append(tarefa)
     salvar_tarefas()
+    print("\nTarefa registrada com sucesso!")
 
 
 def listar_tarefas():
