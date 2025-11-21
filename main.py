@@ -329,35 +329,66 @@ def excluir_animal():
 
 
 def salvar_tarefas():
-    with open("tarefas.txt", "w", encoding = "utf8") as arquivo:
-        for t in tarefas:
-             arquivo.write(
-                f"Id Animal: {t['id_animal']}\n"
-                f"Tipo: {t['tipo_tarefa']}\n"
-                f"Data prevista: {t['data_prevista']}\n"
-                f"Responsável: {t['responsavel']}\n\n"
-            )
+    try:
+        with open("tarefas.txt", "w", encoding = "utf8") as arquivo:
+            for t in tarefas:
+                 arquivo.write(
+                    f"Id Animal: {t.get('id_animal')}\n"
+                    f"Tipo: {t.get('tipo_tarefa')}\n"
+                    f"Data prevista: {t.get('data_prevista')}\n"
+                    f"Responsável: {t.get('responsavel')}\n\n"
+                )
+    except Exception as e:
+        print(f"Erro ao salvar tarefas: {e}")
              
 
 def carregar_tarefas():
     try:
-        with open("tarefas.txt", "r", encoding = "utf8") as arquivo:
+        with open("tarefas.txt", "r", encoding="utf8") as arquivo:
             linhas = arquivo.readlines()
     except FileNotFoundError:
         return
+    
     tarefas.clear()
     tarefa = {}
+
+    conversao = {
+        "id animal": "id_animal",
+        "tipo": "tipo_tarefa",
+        "tipo tarefa": "tipo_tarefa",
+        "data prevista": "data_prevista",
+        "responsável": "responsavel",
+        "responsavel": "responsavel"
+    }
+
     for linha in linhas:
         linha = linha.strip()
+
         if not linha:
             if tarefa:
                 tarefas.append(tarefa)
                 tarefa = {}
             continue
+
+        if ":" not in linha:
+            continue
+
         chave, valor = linha.split(":", 1)
-        tarefa[chave.strip().lower()] = valor.strip()
+        chave = chave.strip().lower()
+        valor = valor.strip()
+
+        nova_chave = conversao.get(chave, chave)
+
+        tarefa[nova_chave] = valor
+
     if tarefa:
         tarefas.append(tarefa)
+
+    for t in tarefas:
+        t.setdefault("id_animal", "")
+        t.setdefault("tipo_tarefa", "")
+        t.setdefault("data_prevista", "")
+        t.setdefault("responsavel", "")
 
 
 def salvar_historico():
@@ -489,15 +520,22 @@ def registrar_tarefa():
     print("Animais disponíveis:")
     for a in animais:
         print(f"{a['id']} - {a['nome']} ({a['espécie']})")
-    id_animal = input("\nDigite o ID do animal que deseja registrar uma tarefa: ").strip()
 
-    for a in animais:
-        if a["id"] == id_animal:
-            animal = a
+    while True:
+        id_animal = input("\nDigite o ID do animal que deseja registrar uma tarefa: ").strip()
+
+        animal = None
+        for a in animais:
+            if a["id"] == id_animal:
+                animal = a
+                break
+
+        if animal is not None:
             break
-    else:
-        print("Animal não encontrado.")
-        return
+        else:
+            print("Animal não encontrado. Tente novamente.")
+
+    print(f"\nAnimal selecionado: {animal['nome']} ({animal['espécie']})")
 
     print("\nTipos de tarefa:")
     print("1 - Vacina")
@@ -507,9 +545,23 @@ def registrar_tarefa():
     print("5 - Outra")
 
     tipos = {"1": "Vacina", "2": "Banho", "3": "Consulta veterinária", "4": "Treino", "5": "Outra"}
+
     while True:
         opc = input("Escolha o tipo de tarefa: ").strip()
-        tipo_tarefa = tipos.get(opc) 
+        tipo_tarefa = tipos.get(opc)
+        if opc == "5":
+            while True:
+                outra = input("Digite o tipo da tarefa: ").strip()
+
+                if outra == "":
+                    print("O campo não pode estar vazio.")
+                elif any(c.isdigit() for c in outra):
+                    print("Digite apenas texto, sem números.")
+                else:
+                    tipo_tarefa = outra
+                    break
+            break
+
         if tipo_tarefa:
             break
         else:
@@ -525,12 +577,14 @@ def registrar_tarefa():
             break
         except ValueError:
             print("Digite no formato DD/MM/AAAA usando uma data real.")
+
     while True:
         responsavel = input("Responsável: ").strip()
         if responsavel == "" or any(c.isdigit() for c in responsavel):
             print("Responsável não pode conter números e nem estar vazio.")
         else:
             break
+
     tarefa = {
         "id_animal": id_animal,
         "tipo_tarefa": tipo_tarefa,
@@ -548,17 +602,26 @@ def listar_tarefas():
     if len(tarefas) == 0:
         print("Nenhuma tarefa registrada.")
         return
+
     print("Lista de Tarefas:\n")
+
     for t in tarefas:
+        id_animal = t.get("id_animal") or t.get("id animal") or t.get("id") or "?"
+
+        tipo = t.get("tipo_tarefa") or t.get("tipo") or "Desconhecido"
+        data_prevista = t.get("data_prevista") or t.get("data prevista") or "Desconhecida"
+        responsavel = t.get("responsavel") or "Desconhecido"
+
         nome_animal = "Desconhecido"
         for a in animais:
-            if a["id"] == t["id_animal"]:
-                nome_animal = a["nome"]
+            if a.get("id") == id_animal:
+                nome_animal = a.get("nome")
                 break
+
         print(f"Animal: {nome_animal}")
-        print(f"Tarefa: {t["tipo_tarefa"]}")
-        print(f"Data prevista: {t["data_prevista"]}")
-        print(f"Responsável: {t["responsavel"]}")
+        print(f"Tarefa: {tipo}")
+        print(f"Data prevista: {data_prevista}")
+        print(f"Responsável: {responsavel}")
         print("-" * 40)
 
 
@@ -567,6 +630,7 @@ def editar_tarefa():
     if not tarefas:
         print("Nenhuma tarefa registrada.")
         return
+
     print("Tarefas atuais:\n")
     for idx, t in enumerate(tarefas, start=1):
         nome_animal = "Desconhecido"
@@ -574,8 +638,11 @@ def editar_tarefa():
             if a.get("id") == t.get("id_animal"):
                 nome_animal = a.get("nome")
                 break
-        print(f"{idx} - Animal: {nome_animal} | Tarefa: {t.get("tipo_tarefa")} | Data: {t.get("data_prevista")} | Responsável: {t.get("responsavel")}")
+
+        print(f"{idx} - Animal: {nome_animal} | Tarefa: {t.get('tipo_tarefa')} | Data: {t.get('data_prevista')} | Responsável: {t.get('responsavel')}")
+
     escolha = input("\nDigite o número da tarefa que deseja editar (ou Enter para cancelar): ").strip()
+
     if escolha == "":
         print("Edição cancelada.")
         return
@@ -587,24 +654,57 @@ def editar_tarefa():
     except ValueError:
         print("Entrada inválida.")
         return
+
     t = tarefas[i]
     print("\nDeixe em branco para manter o valor atual.")
-    nova_data = input(f"Data prevista [{t.get("data_prevista")}]: ").strip()
-    if nova_data != "":
-        t["data_prevista"] = nova_data
-    novo_responsavel = input(f"Responsável [{t.get("responsavel")}]: ").strip()
-    if novo_responsavel != "":
-        t["responsavel"] = novo_responsavel
+
+    while True:
+        nova_data = input(f"Data prevista [{t.get('data_prevista')}]: ").strip()
+
+        if nova_data == "":
+            break
+        try:
+            data_teste = datetime.strptime(nova_data, "%d/%m/%Y").date()
+            if data_teste < datetime.today().date():
+                print("A data não pode estar no passado.")
+                continue
+            t["data_prevista"] = nova_data
+            break
+        except ValueError:
+            print("Digite a data no formato DD/MM/AAAA e usando uma data válida.")
+
+    while True:
+        novo_responsavel = input(f"Responsável [{t.get('responsavel')}]: ").strip()
+        if novo_responsavel == "":
+            break
+        if any(c.isdigit() for c in novo_responsavel):
+            print("O responsável não pode conter números. Tente novamente.")
+        else:
+            t["responsavel"] = novo_responsavel
+            break
+
     print("\nTipos de tarefa:")
     print("1 - Vacina")
     print("2 - Banho")
     print("3 - Consulta veterinária")
     print("4 - Treino")
     print("5 - Outra")
-    op = input(f"Tipo atual [{t.get("tipo_tarefa")}], escolha novo tipo (1-5) ou Enter para manter: ").strip()
-    tipos = {"1": "Vacina", "2": "Banho", "3": "Consulta veterinária", "4": "Treino", "5": "Outra"}
-    if op in tipos:
+
+    tipos = {"1": "Vacina", "2": "Banho", "3": "Consulta veterinária", "4": "Treino", "5": "Outra\n"}
+    op = input(f"Tipo atual [{t.get('tipo_tarefa')}], escolha novo tipo (1-5) ou Enter para manter: ").strip()
+
+    if op == "5":
+        while True:
+            outro = input("Digite o novo tipo de tarefa: ").strip()
+            if outro == "" or any(c.isdigit() for c in outro):
+                print("Digite apenas letras para o nome da tarefa.")
+            else:
+                t["tipo_tarefa"] = outro
+                break
+
+    elif op in tipos:
         t["tipo_tarefa"] = tipos[op]
+
     salvar_tarefas()
     print("\nTarefa atualizada com sucesso!")
 
