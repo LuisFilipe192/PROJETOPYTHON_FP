@@ -305,25 +305,27 @@ def excluir_animal():
     print("Animais cadastrados:")
     for animal in animais:
         print(f"ID: {animal['id']}\n"
-              f"Nome: {animal['nome']} \n"
-              f"Espécie: {animal['espécie']}")
-    id_busca = input("Digite o id do animal que deseja excluir: ").strip()
-    for animal in animais:
-        if animal["id"] == id_busca:
-            confirmar = input(f"Tem certeza que quer excluir {animal["nome"]}?\n(s/n): ").strip().lower()
-            if confirmar in ["sim", "s"]:
-                animais.remove(animal)
-                salvar_animais()
-                print(f"{animal['nome']} excluído com sucesso.")
-                break
-            elif confirmar in ["nao", "não", "n"]:
-                print("Exclusão cancelada.")
-                break
-            else:
-                print("Resposta inválida. Exclusão cancelada.")
-                break
-    else:
-        print("Animal não encontrado.")
+              f"Nome: {animal['nome']}\n"
+              f"Espécie: {animal['espécie']}\n")
+    while True:
+        id_busca = input("Digite o id do animal que deseja excluir: ").strip()
+        for animal in animais:
+            if animal["id"] == id_busca:
+                confirmar = input(
+                    f"Tem certeza que quer excluir {animal['nome']}?\n(s/n): "
+                ).strip().lower()
+                if confirmar in ["sim", "s"]:
+                    animais.remove(animal)
+                    salvar_animais()
+                    print(f"\n{animal['nome']} excluído com sucesso.\n")
+                    return
+                elif confirmar in ["nao", "não", "n"]:
+                    print("\nExclusão cancelada.\n")
+                    return
+                else:
+                    print("\nResposta inválida. Exclusão cancelada.\n")
+                    return
+        print("\nID não encontrado. Tente novamente.\n")
 
 
 def salvar_tarefas():
