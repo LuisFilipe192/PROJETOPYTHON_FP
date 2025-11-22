@@ -111,7 +111,7 @@ def carregar_animais():
         arquivo = open("animais.txt", "r", encoding = "utf8")
         linhas = arquivo.readlines()
     except FileNotFoundError:
-        return print("arquivo não encontrado")
+        return print("Arquivo não encontrado")
     arquivo.close()
  
     animal = {}
@@ -134,19 +134,19 @@ def adicionar_animal():
     while True:
         nome = input("Nome: ")
         if nome == "" or any(letra.isdigit()for letra in nome):
-            print("Nome não pode conter números e nem estar vazio.")
+            print("Nome não pode ter números e nem ficar vazio.")
         else:
             break
     while True:
         especie = input("Espécie: ")
         if especie == "" or any(letra.isdigit()for letra in especie):
-            print("Espécie não pode conter números e nem estar vazio.")
+            print("Espécie não pode ter números e nem ficar vazio.")
         else:
             break
     while True:
         raça = input("Raça: ")
         if raça == "" or any(letra.isdigit()for letra in raça):
-            print("Raça não pode conter números e nem estar vazio.") 
+            print("Raça não pode ter números e nem ficar vazio.") 
         else:
             break
     while True:
@@ -154,21 +154,21 @@ def adicionar_animal():
         try:
             idade = int(idade_input)
             if idade < 0:
-                print("Numero invalido! Não existe idade negativa!")
+                print("Não existe idade negativa, digite novamente")
             else:
                 break
         except ValueError:
-            print("Invalidado! diga a idade na forma de um número inteiro!")
+            print("Digite a idade como um número inteiro")
     while True:
         estado = input("Estado de saúde: ")
         if estado == "" or any(letra.isdigit()for letra in estado):
-            print("Estado de saúde não pode conter números e nem estar vazio.")
+            print("Estado de saúde não pode ter números e nem ficar vazio.")
         else:
             break
     while True:
         comportamento = input("Comportamento: ")
         if comportamento == "" or any(letra.isdigit()for letra in comportamento):
-            print("Comportamento não pode conter números e nem estar vazio.")
+            print("Comportamento não pode ter números e nem ficar vazio.")
         else:
             break
     
@@ -233,6 +233,7 @@ def editar_animal():
     else:
         print("Animal não encontrado.")
         return
+    
     print("\nDeixe em branco caso não deseje alterar e pressione Enter para continuar.\n")
     while True:
         nome = input(f"Nome atual - {animal['nome']}: ").strip()
@@ -408,28 +409,34 @@ def carregar_historico():
             linhas = arquivo.readlines()
     except FileNotFoundError:
         return
+
     historico.clear()
     item = {}
+
     for linha in linhas:
         linha = linha.strip()
+
         if not linha:
-            if item:
+            if item and "id_animal" in item and item["id_animal"]:
                 historico.append(item)
-                item = {}
+            item = {}
             continue
         try:
             chave, valor = linha.split(":", 1)
-            item[chave.strip().lower()] = valor.strip()
+            chave = chave.strip().lower()
+            valor = valor.strip()
+
+            item[chave] = valor
         except ValueError:
             continue
-    if item:
+    if item and "id_animal" in item and item["id_animal"]:
         historico.append(item)
 
 
 def registrar_historico():
     limpar_tela()
     if not animais:
-        print("Nenhum animal cadastrado. Adicione um animal primeiro.")
+        print("Nenhum animal cadastrado.")
         return
     
     print("Animais disponíveis:")
@@ -452,7 +459,12 @@ def registrar_historico():
     while True:
         data_evento = input("Data do Evento (DD/MM/AAAA): ").strip()
         try:
-            datetime.strptime(data_evento, "%d/%m/%Y")
+            data_convertida = datetime.strptime(data_evento, "%d/%m/%Y").date()
+
+            if data_convertida < datetime.today().date():
+                print("A data não pode estar no passado.")
+                continue
+
             break
         except ValueError:
             print("Data inválida! Digite no formato DD/MM/AAAA e usando uma data real.")
@@ -792,10 +804,10 @@ def atraso():
             if a["id"] == t["id_animal"]:
                 nome = a["nome"]
                 break
-        print(f"Animal: {nome}")
+        print(f"\nAnimal: {nome}")
         print(f"Tarefa: {t["tipo_tarefa"]}")
         print(f"Responsável: {t["responsavel"]}")
-        print(f"Atrasada á {-(dias_para_tarefa(t["data_prevista"]))} dias")
+        print(f"Atrasada á {-(dias_para_tarefa(t["data_prevista"]))} dia(s)\n")
 
 
 
