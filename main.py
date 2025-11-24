@@ -794,20 +794,26 @@ def exibir_alerta():
 
 
 def atraso():
+    limpar_tela()
     atrasadas = []
     for t in tarefas:
         if dias_para_tarefa(t["data_prevista"]) < 0:
             atrasadas.append(t)
+        if not atrasadas:
+            print("Nenhuma tarefa atrasada")
     for t in atrasadas:
-        nome = ""
+        nome = "Desconhecido"
         for a in animais:
             if a["id"] == t["id_animal"]:
                 nome = a["nome"]
                 break
+        
+        dias_atraso = abs(dias_para_tarefa(t["data_prevista"]))
+            
         print(f"\nAnimal: {nome}")
         print(f"Tarefa: {t["tipo_tarefa"]}")
         print(f"Responsável: {t["responsavel"]}")
-        print(f"Atrasada á {-(dias_para_tarefa(t["data_prevista"]))} dia(s)\n")
+        print(f"Atrasada á {dias_atraso} dia(s)\n")
 
 
 
