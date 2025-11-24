@@ -799,8 +799,10 @@ def atraso():
     for t in tarefas:
         if dias_para_tarefa(t["data_prevista"]) < 0:
             atrasadas.append(t)
-        if not atrasadas:
-            print("Nenhuma tarefa atrasada")
+
+    if not atrasadas:
+        print("Nenhuma tarefa atrasada")
+        
     for t in atrasadas:
         nome = "Desconhecido"
         for a in animais:
