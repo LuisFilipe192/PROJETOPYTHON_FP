@@ -434,55 +434,78 @@ def carregar_historico():
 
 
 def registrar_historico():
-    limpar_tela()
-    if not animais:
-        print("Nenhum animal cadastrado.")
-        return
-    
-    print("Animais disponíveis:")
-    for a in animais:
-        print(f"{a['id']} - {a['nome']} ({a['espécie']})") 
+    try:   
+        limpar_tela()
+
+        if not animais:
+            print("Nenhum animal cadastrado.")
+            return
         
-    id_animal = input("\nDigite o ID do animal para registrar o histórico: ").strip()
-    
-    nome_animal = ""
-    for a in animais:
-        if a["id"] == id_animal:
-            nome_animal = a["nome"]
-            break
-    else:
-        print("Animal não encontrado")
-        return
+        print("Animais disponíveis:")
+        for a in animais:
+            print(f"{a['id']} - {a['nome']} ({a['espécie']})") 
+        try:    
+            id_animal = input("\nDigite o ID do animal para registrar o histórico: ").strip()
+        except Exception:
+            print("Erro ao ler ID do animal")
+            return
+        
+        nome_animal = ""
 
-    print(f"\n--- Registrando Histórico para {nome_animal} ---")
-    
-    while True:
-        data_evento = input("Data do Evento (DD/MM/AAAA): ").strip()
         try:
-            data_convertida = datetime.strptime(data_evento, "%d/%m/%Y").date()
+            for a in animais:
+                if a["id"] == id_animal:
+                    nome_animal = a["nome"]
+                    break
+            else:
+                print("Animal não encontrado")
+                return
+        except Exception:
+            print("erro ao buscar animal")
+            return
+        
+        print(f"\n--- Registrando Histórico para {nome_animal} ---")
+        
+        while True:
 
-            if data_convertida < datetime.today().date():
-                print("A data não pode estar no passado.")
-                continue
+            try:
+                data_evento = input("Data do Evento (DD/MM/AAAA): ").strip()
+                data_convertida = datetime.strptime(data_evento, "%d/%m/%Y").date()
 
-            break
-        except ValueError:
-            print("Data inválida! Digite no formato DD/MM/AAAA e usando uma data real.")
+                if data_convertida < datetime.today().date():
+                    print("A data não pode estar no passado.")
+                    continue
 
-    tipo_evento = input("Tipo de Evento (Ex: Vacina, Castração, Cirurgia, Medicamento): ").strip()
-    detalhes = input("Detalhes/Descrição do Evento: ").strip()
-
-    item_historico = {
-        "id_animal": id_animal,
-        "data": data_evento,
-        "tipo_evento": tipo_evento,
-        "detalhes": detalhes
-    }
-    
-    historico.append(item_historico)
-    salvar_historico()
-    print(f"\nHistórico médico para {nome_animal} registrado com sucesso!")
-
+                break
+            except ValueError:
+                print("Data inválida! Digite no formato DD/MM/AAAA e usando uma data real.")
+            except Exception:
+                print("Erro inesperado ao processar a data")
+                return
+            
+        try:    
+            tipo_evento = input("Tipo de Evento (Ex: Vacina, Castração, Cirurgia, Medicamento): ").strip()
+            detalhes = input("Detalhes/Descrição do Evento: ").strip()
+        except Exception:
+            print("Erro ao registrar o tipo de evento")
+            return
+        
+        item_historico = {
+            "id_animal": id_animal,
+            "data": data_evento,
+            "tipo_evento": tipo_evento,
+            "detalhes": detalhes
+        }
+        try: 
+            historico.append(item_historico)
+            salvar_historico()
+            print(f"\nHistórico médico para {nome_animal} registrado com sucesso!")
+        except Exception:
+            print("Erro ao salvar historico")        
+            return
+        
+    except Exception:
+        print("Erro inesperado ao registrar histórico médico.")
 
 def listar_historico():
     limpar_tela()
@@ -528,7 +551,7 @@ def registrar_tarefa():
     if len(animais) == 0:
         print("Nenhum animal cadastrado")
         return
-    
+           
     print("Animais disponíveis:")
     for a in animais:
         print(f"{a['id']} - {a['nome']} ({a['espécie']})")
@@ -607,7 +630,7 @@ def registrar_tarefa():
     tarefas.append(tarefa)
     salvar_tarefas()
     print("\nTarefa registrada com sucesso!")
-
+    
 
 def listar_tarefas():
     limpar_tela()
