@@ -757,8 +757,8 @@ def excluir_tarefa():
 
 def dias_para_tarefa(data_prevista_str):
     try:
-        data_prevista = datetime.strptime(data_prevista_str,"%d/%m/%Y" )
-        hoje = datetime.today()
+        data_prevista = datetime.strptime(data_prevista_str,"%d/%m/%Y").date()
+        hoje = datetime.today().date()
         return (data_prevista - hoje).days
     except ValueError:
         return None
@@ -802,7 +802,7 @@ def atraso():
 
     if not atrasadas:
         print("Nenhuma tarefa atrasada")
-        
+
     for t in atrasadas:
         nome = "Desconhecido"
         for a in animais:
