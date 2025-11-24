@@ -21,10 +21,10 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 7. Editar Tarefa
 8. Excluir Tarefa
 9. Exibir Alertas
-10. Sair
-11. Mostrar Atrasos
-12. Registrar Histórico Médico
-13. Listar Histórico Médico
+10. Mostrar Atrasos
+11. Registrar Histórico Médico
+12. Listar Histórico Médico
+13. Sair
 
 - É recomendado escolher numeros ***Interiros*** entre 1 e 13 como mostrado acima
 
