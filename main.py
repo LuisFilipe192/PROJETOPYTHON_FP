@@ -25,10 +25,10 @@ def menu_CRUD():
         print("7 - Editar Tarefa")
         print("8 - Excluir Tarefa")
         print("9 - Exibir Alertas")
-        print("10- Sair")
-        print("11- Mostrar Atrasos")
-        print("12- Registrar Histórico Médico")
-        print("13- Listar Histórico Médico")
+        print("10- Mostrar Atrasos")
+        print("11- Registrar Histórico Médico")
+        print("12- Listar Histórico Médico")
+        print("13- Sair")
         
         op = input("Escolha uma opção: ").strip()
 
@@ -50,14 +50,14 @@ def menu_CRUD():
             excluir_tarefa()
         elif op == "9":
             exibir_alerta()
-        elif op == "10":
+        elif op == "13":
             print("Saindo...")
             break
-        elif op == "11":
+        elif op == "10":
             atraso()
-        elif op == "12":
+        elif op == "11":
             registrar_historico()
-        elif op == "13":
+        elif op == "12":
             listar_historico()
         else:
             print("Opção inválida.")
