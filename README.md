@@ -155,12 +155,8 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 
 - No final será perguntado se o usuário deseja voltar ao menu
 
-## 10. Sair do sistema (encerrar o programa)
 
-- Encerra o programa imediatamente
-- Tudo é salvo automaticamente
-
-## 11. Mostrar Tarefas
+## 10. Mostrar Tarefas
 
 - Isso exibirá, somente as tarefas que estão atrasadas
 - Mostra as seguintes informações:
@@ -170,7 +166,7 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
 >- O responsável
 >- Quanto tempo de atraso (em dias)
 
-## 12. Registrar Histórico Médico
+## 11. Registrar Histórico Médico
 
 - Aparecerá na tela os animais cadastrados assim como seus respectivos IDs
 - Caso não exista, o sistema irá alertar
@@ -181,12 +177,17 @@ Existem certas coisas que você como usuário pode fazer nesse programa para usa
     >- Descrição em detalhes do evento
 - No final será perguntado se o usuário deseja voltar ao menu
 
-## 13. Listar Histórico Médico
+## 12. Listar Histórico Médico
 
 - Aparecerá na tela os Históricos Médicos cadastrados assim como seus respectivos IDs
 - Caso não exista, o sistema irá alertar
 - Caso queira ver o histórico médico completo do animal cadastrado, digite o ID do respectivo animal cadastrado, caso isso não ocorra o programa encerra e será perguntado se o usuário deseja voltar ao menu
 - No final será perguntado se o usuário deseja voltar ao menu
+
+## 13. Sair do sistema (encerrar o programa)
+
+- Encerra o programa imediatamente
+- Tudo é salvo automaticamente
 
 ## 👨‍💻Autores do trabalho👨‍💻
 
